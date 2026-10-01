@@ -1,0 +1,15 @@
+# Environment variables (NEVER commit secrets!)
+.env
+.env.local
+
+# Private admin credentials & database storage
+data/auth.json
+data/sessions.json
+
+# Temporary / node / cache / test files
+node_modules/
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
+tests/*.png

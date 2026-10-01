@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login • Mum's Keepsake Studio</title>
+  
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/admin.css">
+  <style>
+    .auth-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 30%, #251221 0%, #150A14 60%, #0B040A 100%);
+      padding: 24px 16px;
+      box-sizing: border-box;
+    }
+    .auth-card {
+      background: rgba(30, 14, 28, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 40px 32px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .auth-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      animation: floatHeart 3s ease-in-out infinite alternate;
+    }
+    @keyframes floatHeart {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
+    .auth-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2.3rem;
+      font-weight: 600;
+      color: #FFF7ED;
+      margin: 0 0 6px 0;
+    }
+    .auth-subtitle {
+      font-size: 0.95rem;
+      color: #D1BFCC;
+      margin: 0 0 28px 0;
+      line-height: 1.4;
+    }
+    .auth-form-group {
+      text-align: left;
+      margin-bottom: 16px;
+    }
+    .auth-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #F5D78B;
+      margin-bottom: 6px;
+    }
+    .input-wrap {
+      position: relative;
+    }
+    .auth-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      background: rgba(20, 9, 19, 0.85);
+      font-size: 16px; /* iOS auto-zoom prevention */
+      color: #FFF7ED;
+      font-family: inherit;
+      transition: all 0.25s ease;
+      box-sizing: border-box;
+    }
+    .auth-input:focus {
+      outline: none;
+      border-color: #F5D78B;
+      background: rgba(30, 13, 28, 0.95);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+    }
+    .auth-input::placeholder {
+      color: #8C7586;
+    }
+    .toggle-pw-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #D1BFCC;
+      font-size: 1.1rem;
+      padding: 4px;
+    }
+    .auth-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 18px 0 24px 0;
+      font-size: 0.88rem;
+    }
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #D1BFCC;
+      cursor: pointer;
+      user-select: none;
+    }
+    .remember-label input[type="checkbox"] {
+      accent-color: #D4AF37;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .forgot-password-safety-wrap {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(212, 175, 55, 0.3);
+      text-align: center;
+    }
+    .forgot-link-separated {
+      display: inline-block;
+      color: #F5D78B;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: rgba(36, 16, 33, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      transition: all 0.25s ease;
+    }
+    .forgot-link-separated:hover {
+      color: #FFF7ED;
+      background: rgba(52, 23, 48, 1);
+      border-color: #F5D78B;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+    }
+    .auth-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+      color: #120912;
+      font-weight: 800;
+      font-size: 1.05rem;
+      font-family: inherit;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .auth-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.5);
+    }
+    .auth-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .alert-banner {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      display: none;
+      line-height: 1.4;
+      text-align: left;
+    }
+    .alert-error {
+      background: rgba(80, 20, 20, 0.7);
+      color: #FF7B72;
+      border: 1px solid rgba(255, 123, 114, 0.4);
+    }
+    .alert-success {
+      background: rgba(20, 60, 30, 0.7);
+      color: #7EE787;
+      border: 1px solid rgba(126, 231, 135, 0.4);
+    }
+    .auth-footer {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(212, 175, 55, 0.25);
+      font-size: 0.85rem;
+      color: #D1BFCC;
+    }
+    .auth-footer a {
+      color: #F5D78B;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .auth-footer a:hover {
+      color: #FFF7ED;
+      text-decoration: underline;
+    }
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 28px 18px;
+        border-radius: 20px;
+      }
+      .auth-title {
+        font-size: 1.9rem;
+      }
+      .auth-subtitle {
+        font-size: 0.88rem;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <div class="auth-page-wrapper">
+    <div class="auth-card">
+      <div class="auth-icon">🔐</div>
+      <h1 class="auth-title">Keepsake Studio</h1>
+      <p class="auth-subtitle">Private administrator sign-in for Mum's birthday tribute website.</p>
+
+      <div id="alert-banner" class="alert-banner"></div>
+
+      <form id="login-form">
+        <div class="auth-form-group">
+          <label class="auth-label" for="username">Email Address</label>
+          <input type="email" id="username" class="auth-input" placeholder="Kcee492@gmail.com" autocomplete="email" required autofocus>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="auth-label" for="password">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="password" class="auth-input" placeholder="Enter password" autocomplete="current-password" required>
+            <button type="button" class="toggle-pw-btn" id="toggle-pw" title="Show/Hide password">👁️</button>
+          </div>
+        </div>
+
+        <div class="auth-options" style="justify-content: flex-start; margin: 12px 0 20px 0;">
+          <label class="remember-label">
+            <input type="checkbox" id="remember-me" checked>
+            <span>Remember me (7 days)</span>
+          </label>
+        </div>
+
+        <!-- Big, prominent Unlock Studio button -->
+        <button type="submit" id="login-btn" class="auth-btn">
+          <span>Unlock Studio ✨</span>
+        </button>
+
+        <!-- Forgot password placed clearly BELOW the login button to avoid accidental taps -->
+        <div class="forgot-password-safety-wrap">
+          <a href="/admin/forgot-password" class="forgot-link-separated" id="forgot-link">
+            Forgot your password?
+          </a>
+        </div>
+      </form>
+
+      <div class="auth-footer">
+        <a href="/" target="_blank">&larr; Return to Mum's Keepsake Website</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle Password Visibility
+    const pwInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('toggle-pw');
+    toggleBtn.addEventListener('click', () => {
+      const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      pwInput.setAttribute('type', type);
+      toggleBtn.textContent = type === 'password' ? '👁️' : '🔒';
+    });
+
+    // Check for URL parameters (e.g. ?reset=success or ?loggedout=1)
+    const urlParams = new URLSearchParams(window.location.search);
+    const alertBanner = document.getElementById('alert-banner');
+    if (urlParams.get('reset') === 'success') {
+      showAlert('Password reset successfully! You can now log in with your new password.', 'success');
+    } else if (urlParams.get('loggedout') === '1') {
+      showAlert('You have been securely logged out.', 'success');
+    }
+
+    function showAlert(msg, type = 'error') {
+      alertBanner.textContent = msg;
+      alertBanner.className = 'alert-banner ' + (type === 'success' ? 'alert-success' : 'alert-error');
+      alertBanner.style.display = 'block';
+    }
+
+    // Handle Login Submit
+    const form = document.getElementById('login-form');
+    const loginBtn = document.getElementById('login-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBanner.style.display = 'none';
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('remember-me').checked;
+
+      if (!username || !password) {
+        showAlert('Please enter both username and password.');
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span>Verifying... 🌸</span>';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, rememberMe })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          loginBtn.innerHTML = '<span>Success! Opening Studio... 🌸</span>';
+          window.location.href = data.redirect || '/admin';
+        } else {
+          showAlert(data.error || 'Invalid credentials.');
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = '<span>Unlock Studio ✨</span>';
+        }
+      } catch (err) {
+        showAlert('Network error. Please try again.');
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<span>Unlock Studio ✨</span>';
+      }
+    });
+  </script>
+</body>
+</html>

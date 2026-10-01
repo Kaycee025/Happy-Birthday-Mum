@@ -1,0 +1,489 @@
+/* ==========================================================================
+   GATE PAGE & 3D ENVELOPE OPENING ANIMATION
+   Midnight Plum & Champagne Gold Luxury Palette
+   ========================================================================== */
+
+#gate-page {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 35%, #251221 0%, #150A14 55%, #0B040A 100%);
+  overflow: hidden;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.5s ease;
+}
+
+#gate-page.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Canvas for Floating Gold & Wine Petals */
+#petals-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Gate Content Container */
+.gate-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  max-width: 580px;
+  width: 100%;
+}
+
+/* Countdown to Dec 23 Banner */
+.gate-countdown-wrap {
+  margin-bottom: 28px;
+  padding: 10px 24px;
+  background: rgba(36, 18, 32, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 40px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+.countdown-title {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #EAC875;
+  font-weight: 600;
+}
+
+.countdown-timer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-heading);
+  color: #FFF6ED;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+}
+
+.countdown-num {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #F5D78B;
+  line-height: 1;
+}
+
+.countdown-label {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: #CDB8C4;
+  letter-spacing: 0.05em;
+}
+
+.countdown-sep {
+  font-size: 1.2rem;
+  color: #D4AF37;
+  line-height: 1;
+  margin-top: -6px;
+}
+
+/* Handwritten Callout */
+.gate-callout {
+  font-family: var(--font-script);
+  font-size: clamp(2.6rem, 7vw, 3.8rem);
+  color: #F5D78B;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 20px rgba(212, 175, 55, 0.4), 0 4px 30px rgba(168, 62, 94, 0.3);
+  animation: pulse-callout 3s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes pulse-callout {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* ==========================================================================
+   3D ENVELOPE INTERACTIVE COMPONENT
+   ========================================================================== */
+.envelope-stage {
+  perspective: 1400px;
+  width: 330px;
+  height: 220px;
+  max-width: 88vw;
+  margin: 0 auto;
+  position: relative;
+  cursor: pointer;
+}
+
+.envelope-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+}
+
+.envelope-wrapper:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* Envelope Back Face */
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #2D1528 0%, #1A0B17 100%);
+  border-radius: 12px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(168, 62, 94, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  z-index: 1;
+}
+
+/* The Keepsake Card Inside */
+.envelope-letter {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  right: 12px;
+  height: 215px;
+  background: linear-gradient(135deg, #FFFDF9 0%, #F8F1E7 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform-origin: bottom center;
+  transition: transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 1.6s ease;
+}
+
+.letter-border-inner {
+  border: 1px dashed rgba(212, 175, 55, 0.55);
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  box-sizing: border-box;
+}
+
+.letter-flower {
+  font-size: 1.4rem;
+  color: #D4AF37;
+  margin-bottom: 2px;
+}
+
+.letter-heading {
+  font-family: var(--font-script);
+  font-size: 2.1rem;
+  color: #2D1326;
+  line-height: 1.15;
+}
+
+.letter-sub {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: #694A5F;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.letter-note {
+  font-family: var(--font-heading);
+  font-size: 0.94rem;
+  font-style: italic;
+  color: #A03D61;
+  margin-top: 6px;
+}
+
+.letter-date {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8C6F23;
+  margin-top: 6px;
+}
+
+/* Envelope Front Pockets (Folded flaps in dark midnight plum silk) */
+.envelope-pocket {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Bottom and side triangular shadows */
+.pocket-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 110px 0 110px 165px;
+  border-color: transparent transparent transparent #251122;
+  filter: drop-shadow(2px 0 6px rgba(0, 0, 0, 0.35));
+}
+
+.pocket-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 110px 165px 110px 0;
+  border-color: transparent #200E1D transparent transparent;
+  filter: drop-shadow(-2px 0 6px rgba(0, 0, 0, 0.35));
+}
+
+.pocket-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 165px 120px 165px;
+  border-color: transparent transparent #291225 transparent;
+  filter: drop-shadow(0 -3px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* Envelope Top Flap */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 125px 165px 0 165px;
+  border-color: #35192F transparent transparent transparent;
+  transform-origin: top center;
+  z-index: 4;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+}
+
+/* Wax Heart Seal in Royal Velvet Wine with Gold Rim */
+.heart-seal {
+  position: absolute;
+  top: 86px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle at 35% 35%, #A83259 0%, #751D3B 65%, #4A0E22 100%);
+  border-radius: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.65),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.5);
+  border: 1.5px solid rgba(245, 215, 139, 0.75);
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.5s ease, opacity 0.5s ease;
+  user-select: none;
+}
+
+.heart-seal::before {
+  content: '❤';
+  font-size: 24px;
+  color: #FFE8D6;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  margin-top: -2px;
+}
+
+.heart-seal:hover {
+  transform: translateX(-50%) scale(1.08);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Subtle Click Hint Pulse */
+.seal-hint {
+  margin-top: 32px;
+  font-size: 0.95rem;
+  color: #D6C2CE;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+/* Optional Family Passcode Box */
+.family-passcode-wrap {
+  margin-top: 24px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.family-passcode-wrap.active {
+  display: flex;
+}
+
+.passcode-input {
+  max-width: 220px;
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  background: rgba(35, 18, 31, 0.9);
+  font-size: 16px;
+  color: #FFF6ED;
+  letter-spacing: 0.1em;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.passcode-input:focus {
+  outline: none;
+  border-color: #EAC875;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+.passcode-error {
+  font-size: 0.8rem;
+  color: #ff6b81;
+  display: none;
+}
+
+/* ==========================================================================
+   GENTLE, SLOW & ELEGANT ENVELOPE OPENING ANIMATION SEQUENCE
+   ========================================================================== */
+
+/* Step 1: Breaking Seal (0.0s - 0.8s) */
+.envelope-wrapper.opening .heart-seal {
+  transform: translateX(-50%) scale(1.25) rotate(15deg);
+  opacity: 0;
+  filter: blur(4px);
+  pointer-events: none;
+  transition: transform 0.8s ease, opacity 0.8s ease, filter 0.8s ease;
+}
+
+/* Step 2: Flap lifts up in 3D smoothly (0.6s - 2.0s) */
+.envelope-wrapper.opening .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+  transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+}
+
+/* Step 3: Card slides up smoothly & floats peacefully into view (1.8s - 3.4s) */
+.envelope-wrapper.opening .envelope-letter {
+  transform: translateY(-165px) scale(1.05);
+  z-index: 10;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  transition: transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) 1.8s, box-shadow 1.6s ease 1.8s;
+}
+
+/* Mobile & Small Device Optimization for Envelope Stage */
+@media (max-width: 480px) {
+  .gate-content {
+    padding: 14px;
+  }
+  .gate-countdown-wrap {
+    margin-bottom: 20px;
+    padding: 8px 18px;
+  }
+  .gate-callout {
+    font-size: 2.3rem;
+    margin-bottom: 18px;
+  }
+  .envelope-stage {
+    transform: scale(0.92);
+    transform-origin: center center;
+    margin: -8px auto;
+  }
+}
+
+@media (max-width: 375px) {
+  .gate-countdown-wrap {
+    padding: 6px 14px;
+    gap: 2px;
+  }
+  .countdown-timer {
+    gap: 8px;
+  }
+  .countdown-item {
+    min-width: 34px;
+  }
+  .countdown-num {
+    font-size: 1.25rem;
+  }
+  .gate-callout {
+    font-size: 2rem;
+  }
+  .envelope-stage {
+    transform: scale(0.84);
+    transform-origin: center center;
+    margin: -14px auto;
+  }
+}
+
+/* Respect prefers-reduced-motion: Instant transition */
+@media (prefers-reduced-motion: reduce) {
+  .envelope-wrapper.opening .heart-seal {
+    opacity: 0;
+    transition: none;
+  }
+
+  .envelope-wrapper.opening .envelope-flap {
+    transform: rotateX(180deg);
+    transition: none;
+  }
+
+  .envelope-wrapper.opening .envelope-letter {
+    transition: none;
+  }
+}

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>A Keepsake for Mum • Happy Birthday, December 23rd</title>
+  <meta name="description" content="A private, heartfelt digital keepsake and celebration book created with endless love and appreciation for Mum's birthday on December 23rd.">
+  
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  
+  <!-- Modern Google Fonts: Cormorant Garamond (Headings), Great Vibes (Script), Nunito (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Great+Vibes&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/envelope.css">
+</head>
+<body>
+
+  <!-- =======================================================================
+       GATE PAGE: FULLSCREEN ENVELOPE & PETALS (THE COVER)
+       ======================================================================= -->
+  <div id="gate-page">
+    <canvas id="petals-canvas"></canvas>
+
+    <div class="gate-content">
+      <!-- Countdown to December 23rd -->
+      <div class="gate-countdown-wrap" id="gate-countdown-wrap">
+        <span class="countdown-title" id="countdown-title-text">Counting Down to December 23rd</span>
+        <div class="countdown-timer">
+          <div class="countdown-item">
+            <span class="countdown-num" id="count-days">00</span>
+            <span class="countdown-label">Days</span>
+          </div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-item">
+            <span class="countdown-num" id="count-hours">00</span>
+            <span class="countdown-label">Hours</span>
+          </div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-item">
+            <span class="countdown-num" id="count-mins">00</span>
+            <span class="countdown-label">Mins</span>
+          </div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-item">
+            <span class="countdown-num" id="count-secs">00</span>
+            <span class="countdown-label">Secs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Handwritten Callout Text -->
+      <h1 class="gate-callout" id="gate-callout-text">Click on this, Mum</h1>
+
+      <!-- 3D Interactive Envelope -->
+      <div class="envelope-stage" id="envelope-stage" role="button" aria-label="Open your birthday letter, Mum" tabindex="0">
+        <div class="envelope-wrapper" id="envelope-wrapper">
+          <!-- Back layer -->
+          <div class="envelope-back"></div>
+
+          <!-- Keepsake Letter tucked inside -->
+          <div class="envelope-letter" id="envelope-letter">
+            <div class="letter-border-inner">
+              <div class="letter-flower">❦</div>
+              <div class="letter-heading">For Our Dearest Mum</div>
+              <div class="letter-sub">A celebration of the woman who gives us everything</div>
+              <div class="letter-note">“With endless love on your birthday”</div>
+              <div class="letter-date">December 23rd • Forever Cherished</div>
+            </div>
+          </div>
+
+          <!-- Folded bottom and side flaps -->
+          <div class="envelope-pocket">
+            <div class="pocket-left"></div>
+            <div class="pocket-right"></div>
+            <div class="pocket-bottom"></div>
+          </div>
+
+          <!-- Top Foldable Flap -->
+          <div class="envelope-flap" id="envelope-flap"></div>
+
+          <!-- Heart Wax Seal -->
+          <div class="heart-seal" id="heart-seal" title="Click to break the seal and read your keepsake"></div>
+        </div>
+      </div>
+
+      <p class="seal-hint">Tap the heart seal to open your keepsake</p>
+
+      <!-- Optional Family Passcode (Enabled in Admin) -->
+      <div class="family-passcode-wrap" id="family-passcode-wrap">
+        <input type="password" id="gate-passcode-input" class="passcode-input" placeholder="Family Passcode" autocomplete="off">
+        <span class="passcode-error" id="gate-passcode-error"></span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =======================================================================
+       MAIN KEEPSAKE BOOK (MULTI-PAGE EXPERIENCE)
+       ======================================================================= -->
+  <main id="home-page">
+    <div class="keepsake-wrapper">
+      
+      <!-- Multi-Page Chapter Navigation -->
+      <nav class="site-nav" id="site-nav" aria-label="Keepsake Navigation">
+        <!-- Mobile Header Bar with Hamburger Button -->
+        <div class="nav-mobile-bar">
+          <span class="nav-mobile-brand">Dearest Mum</span>
+          <div class="nav-mobile-controls">
+            <span class="nav-mobile-title" id="nav-mobile-title">Our Mum</span>
+            <button type="button" class="nav-toggle-btn" id="nav-toggle-btn" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="nav-links-menu">
+              <span class="hamburger-line line-1"></span>
+              <span class="hamburger-line line-2"></span>
+              <span class="hamburger-line line-3"></span>
+            </button>
+          </div>
+        </div>
+
+        <ul class="nav-links" id="nav-links-menu">
+          <li><button type="button" class="nav-link" data-page="gate">Envelope</button></li>
+          <li><button type="button" class="nav-link active" data-page="page-hero">Our Mum</button></li>
+          <li><button type="button" class="nav-link" data-page="page-best-mum">The Best Mum</button></li>
+          <li><button type="button" class="nav-link" data-page="page-supportive-wife">Supportive Wife</button></li>
+          <li><button type="button" class="nav-link nav-link-wishes" id="nav-link-wishes" data-page="page-wishes">Birthday Wishes <span class="nav-wishes-pill" id="nav-wishes-pill">Dec 23</span></button></li>
+          <li><a href="/admin/login" class="nav-link nav-link-admin" id="nav-link-admin" title="Admin Studio Login">Admin</a></li>
+        </ul>
+      </nav>
+
+      <!-- ===================================================================
+           PAGE 1: OUR MUM (HERO APPRECIATION)
+           =================================================================== -->
+      <section class="keepsake-page active-page" id="page-hero">
+        <div class="hero-section">
+          <div class="hero-badge" id="hero-badge-text">Keepsake Appreciation • December 23</div>
+          
+          <!-- Mum's Photo in Arched Frame -->
+          <div class="hero-arch-container">
+            <div class="hero-image-wrap">
+              <img id="hero-mum-image" src="assets/images/hero-mum.jpg" alt="Our Beloved Mum" loading="eager">
+            </div>
+          </div>
+
+          <span class="hero-script-tag" id="hero-script-tag">Happy Birthday to Our Dearest Mum</span>
+          <h1 class="hero-title" id="hero-main-heading">Mum, You Are Our Heart & Home</h1>
+          <p class="hero-writeup" id="hero-writeup-text">
+            To the woman who gave us everything, whose gentle smile has been our steadfast compass, and whose infinite warmth has turned our lives into something miraculous. Today, on December 23rd, we celebrate you with all our hearts.
+          </p>
+
+          <div class="flourish-divider">
+            <div class="flourish-line"></div>
+            <div class="flourish-icon">❦</div>
+            <div class="flourish-line"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===================================================================
+           PAGE 2: THE BEST MUM (LOVE & SACRIFICE)
+           =================================================================== -->
+      <section class="keepsake-page" id="page-best-mum">
+        <div class="story-chapter visible" id="chapter-best-mum"></div>
+      </section>
+
+
+      <!-- ===================================================================
+           PAGE 4: A SUPPORTIVE WIFE (PARTNERSHIP & DEVOTION)
+           =================================================================== -->
+      <section class="keepsake-page" id="page-supportive-wife">
+        <div class="story-chapter visible" id="chapter-supportive-wife"></div>
+      </section>
+
+      <!-- ===================================================================
+           PAGE 4: BIRTHDAY WISHES GUESTBOOK
+           =================================================================== -->
+      <section class="keepsake-page" id="page-wishes">
+        <div class="wishes-section">
+          <div class="section-header">
+            <div class="section-script">With Endless Love</div>
+            <h2 class="section-title" id="wishes-main-title">Birthday Wishes for Mum</h2>
+            <p class="section-desc" id="wishes-main-desc">Leave a note of love, gratitude, or a favorite memory for Mum to read on her birthday.</p>
+          </div>
+
+          <div class="wishes-layout">
+            <!-- Dynamic Left Column: Live Countdown Card (when locked) or Birthday Guestbook Form (when unlocked) -->
+            <div id="wishes-dynamic-panel" class="wishes-dynamic-panel">
+              <!-- Rendered dynamically by initBirthdayWishesLockSystem() -->
+            </div>
+
+            <!-- Wishes Stream Right Column: Newest wishes appear immediately at the top -->
+            <div class="wishes-stream-col">
+              <div class="wishes-stream-header">
+                <div class="wishes-stream-title-row">
+                  <div class="wishes-stream-title">
+                    <span class="wishes-stream-icon">❦</span>
+                    <span>Messages of Love</span>
+                    <span class="wishes-count-pill" id="wishes-count-pill">0</span>
+                  </div>
+                </div>
+                <p class="wishes-stream-subtitle">Newest wishes appear right at the top • Carrying time &amp; year</p>
+              </div>
+
+              <!-- Stream Container -->
+              <div class="wishes-stream" id="wishes-stream-container">
+                <!-- Wishes rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="footer-script">With all our love, your children.</div>
+        <div class="footer-sub">A Private Digital Keepsake Book • Forever Cherished</div>
+        <div class="footer-date-tag">Happy Birthday, Mum • December 23rd</div>
+        <div>
+          <a href="admin.html" class="footer-admin-link" title="Open Admin Studio to update stories and photos">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span>Keepsake Studio</span>
+          </a>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- ===================================================================
+       CELEBRATORY THANK-YOU MODAL FROM MUM
+       =================================================================== -->
+  <div class="wish-thankyou-modal" id="wish-thankyou-modal" role="dialog" aria-modal="true" aria-labelledby="thankyou-title" style="display: none;">
+    <div class="wish-thankyou-backdrop" id="wish-thankyou-backdrop"></div>
+    <div class="wish-thankyou-card">
+      <button type="button" class="wish-thankyou-close" id="wish-thankyou-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div class="wish-thankyou-portrait-wrap">
+        <div class="wish-thankyou-portrait-ring">
+          <img src="assets/images/hero-mum.jpg" alt="Mum smiling" class="wish-thankyou-portrait" id="wish-thankyou-portrait-img">
+        </div>
+        <div class="wish-thankyou-heart-badge">❤️</div>
+      </div>
+
+      <div class="wish-thankyou-tag">
+        <span class="wish-thankyou-flourish">❦</span>
+        <span id="thankyou-title">A Message from Mum</span>
+        <span class="wish-thankyou-flourish">❦</span>
+      </div>
+
+      <h3 class="wish-thankyou-headline">“Thank you for all your wishes, it made my day.”</h3>
+
+      <p class="wish-thankyou-note">
+        Your heartfelt words and warm blessings bring so much joy to my heart. Knowing I am surrounded by such love makes this birthday truly unforgettable.
+      </p>
+
+      <div class="wish-thankyou-actions">
+        <button type="button" class="btn-thankyou-view" id="wish-thankyou-view-btn">
+          <span>View Your Wish in Guestbook</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+        </button>
+        <button type="button" class="btn-thankyou-dismiss" id="wish-thankyou-dismiss-btn">
+          <span>Close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Supabase JS Client for Cloud Sync -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/petals.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

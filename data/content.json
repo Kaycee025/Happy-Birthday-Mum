@@ -1,0 +1,408 @@
+{
+  "settings": {
+    "mumName": "Mum",
+    "birthdayDate": "December 23",
+    "familyPasscodeEnabled": false,
+    "familyPasscode": "mumlove",
+    "customAudioUrl": "",
+    "wishesUnlockedForTesting": false
+  },
+  "hero": {
+    "badge": "Keepsake Appreciation • December 23",
+    "scriptTag": "Happy Birthday to Our Dearest",
+    "heading": "Mum, You Are Our Light & Inspiration",
+    "writeup": "To the woman who gave us everything, whose gentle smile has been our steadfast compass, and whose infinite warmth has turned our lives into something miraculous. Today, on December 23rd, we celebrate you with all our hearts.",
+    "image": "assets/images/hero-mum.jpg"
+  },
+  "sections": [
+    {
+      "id": "best-mum",
+      "subtitle": "First Daughter",
+      "title": "Lolo (Ada Ukwuaziza)",
+      "narrative": "Dearest Mum, words cannot begin to capture the depth of my gratitude and love for you. You have been our pillar of strength, our comfort, and our greatest inspiration. Everything I am and aspire to be is because of your unwavering love and sacrifices.",
+      "quote": "“To the queen of our hearts, the woman whose grace guides us every day.”",
+      "image": "assets/first-daughter/lolo-photo-01.jpg",
+      "stamp": "Ada Ukwuaziza",
+      "photos": [
+        "assets/first-daughter/lolo-photo-01.jpg",
+        "assets/first-daughter/lolo-photo-02.jpg",
+        "assets/first-daughter/lolo-photo-03.jpg",
+        "assets/first-daughter/lolo-photo-04.jpg",
+        "assets/first-daughter/lolo-photo-05.jpg",
+        "assets/first-daughter/lolo-photo-06.jpg",
+        "assets/first-daughter/lolo-photo-07.jpg",
+        "assets/first-daughter/lolo-photo-08.jpg",
+        "assets/first-daughter/lolo-photo-09.jpg",
+        "assets/first-daughter/lolo-photo-10.jpg",
+        "assets/first-daughter/lolo-photo-11.jpg",
+        "assets/first-daughter/lolo-photo-12.jpg"
+      ],
+      "video": "assets/first-daughter/lolo-video.mp4"
+    },
+    {
+      "id": "supportive-wife",
+      "subtitle": "Devotion & Grace",
+      "title": "A Supportive Wife",
+      "narrative": "Happy birthday to my beautiful wife, my partner and the mother of our children. ❤️\n\nI am grateful to God for the woman you are and for the life we have built together. Watching you love and care for our family is something I never take for granted. You have been a wonderful wife, a loving mother, and a strong pillar of this family.\n\nThank you for standing by me, for all the sacrifices you make, and for the love you continue to give us every day. I pray that God blesses you with good health, peace, happiness and many more beautiful years.\n\nMay this new chapter bring you everything your heart desires. I love you, and I’m grateful to have you as my wife.\n\nHappy birthday, my love. ❤️",
+      "quote": "“May this new chapter bring you everything your heart desires. I love you, and I’m grateful to have you as my wife.”",
+      "image": "assets/supportive-wife/dad-photo-01.jpg",
+      "photos": [
+        "assets/supportive-wife/dad-photo-01.jpg",
+        "assets/supportive-wife/dad-photo-02.jpg"
+      ],
+      "stamp": "Your Husband"
+    }
+  ],
+  "childrenTributes": [
+    {
+      "id": "child-1-lolo",
+      "childIndex": 1,
+      "name": "Lolo (Ada Ukwuaziza)",
+      "role": "First Daughter",
+      "stamp": "Ada Ukwuaziza",
+      "narrative": "Dearest Mum, words cannot begin to capture the depth of my gratitude and love for you. You have been our pillar of strength, our comfort, and our greatest inspiration. Everything I am and aspire to be is because of your unwavering love and sacrifices.",
+      "quote": "“To the queen of our hearts, the woman whose grace guides us every day.”",
+      "photos": [
+        "assets/first-daughter/lolo-photo-01.jpg",
+        "assets/first-daughter/lolo-photo-02.jpg",
+        "assets/first-daughter/lolo-photo-03.jpg",
+        "assets/first-daughter/lolo-photo-04.jpg",
+        "assets/first-daughter/lolo-photo-05.jpg",
+        "assets/first-daughter/lolo-photo-06.jpg",
+        "assets/first-daughter/lolo-photo-07.jpg",
+        "assets/first-daughter/lolo-photo-08.jpg",
+        "assets/first-daughter/lolo-photo-09.jpg",
+        "assets/first-daughter/lolo-photo-10.jpg",
+        "assets/first-daughter/lolo-photo-11.jpg",
+        "assets/first-daughter/lolo-photo-12.jpg"
+      ],
+      "videos": [
+        "assets/first-daughter/lolo-video.mp4"
+      ]
+    },
+    {
+      "id": "child-2-first-son",
+      "childIndex": 2,
+      "name": "Kenechukwu (Kenebom)",
+      "role": "First Son",
+      "stamp": "Kenechukwu (Kenebom)",
+      "narrative": "Happy birthday mum.\n\nYou have been so so supportive, caring and all I could ever wish for in a mum, on your special day all I wish is peace and good health.\n\nEveryday should be a special day for you ❤️",
+      "quote": "“Everyday should be a special day for you ❤️”",
+      "photos": [
+        "assets/first-son/son-photo-01.jpg",
+        "assets/first-son/son-photo-02.jpg",
+        "assets/first-son/son-photo-03.jpg"
+      ],
+      "videos": [
+        "assets/first-son/son-video-01.mp4",
+        "assets/first-son/son-video-02.mp4",
+        "assets/first-son/son-video-03.mp4"
+      ]
+    },
+    {
+      "id": "child-3-second-daughter",
+      "childIndex": 3,
+      "name": "Second Daughter",
+      "role": "Second Daughter",
+      "stamp": "Second Daughter",
+      "narrative": "One striking character you have is that you always support anyone, even when you don't understand exactly what they're doing. As far as it will make you happy and isn't evil, mummy will support you 100 %\n\nHappy birthday Mummy🥹\nThank you for all your sacrifices and ceaseless love.\nKeep basking in the beauty of the Lord.💙",
+      "quote": "“Thank you for all your sacrifices and ceaseless love. Keep basking in the beauty of the Lord.💙”",
+      "photos": [
+        "assets/second-daughter/daughter2-photo-01.jpg"
+      ],
+      "videos": []
+    },
+    {
+      "id": "child-4-second-son",
+      "childIndex": 4,
+      "name": "Second Son",
+      "role": "Second Son",
+      "stamp": "Second Son",
+      "narrative": "Happy birthday Mummy 🤭.\n\nWe thank God for adding 1 year to ur life and making you look younger as if he took ur years backwards\n\nEnjoy your day and don't enter kitchen today oo, Daddy will take care anything you need today\n\nMany more years to reap the fruit of ur labour",
+      "quote": "“Many more years to reap the fruit of ur labour”",
+      "photos": [
+        "assets/second-son/son2-photo-01.jpg",
+        "assets/second-son/son2-photo-02.jpg",
+        "assets/second-son/son2-photo-03.jpg"
+      ],
+      "videos": []
+    },
+    {
+      "id": "child-5-third-son",
+      "childIndex": 5,
+      "name": "Third Son",
+      "role": "Third Son",
+      "stamp": "Third Son",
+      "narrative": "Mummy, being the last born will always make me feel like I have a special place in your heart 😂❤️. Thank you for all the love, care, sacrifices, and prayers you’ve given me and the whole family.\n\nYou deserve all the love and happiness in the world.\n\nHappy birthday, Mummy. I love you so much ❤️🥹. May this new year of your life be filled with everything your heart desires.",
+      "quote": "“You deserve all the love and happiness in the world.”",
+      "photos": [
+        "assets/third-son/son3-photo-01.jpg",
+        "assets/third-son/son3-photo-02.jpg",
+        "assets/third-son/son3-photo-03.jpg",
+        "assets/third-son/son3-photo-04.jpg",
+        "assets/third-son/son3-photo-05.jpg",
+        "assets/third-son/son3-photo-06.jpg",
+        "assets/third-son/son3-photo-07.jpg"
+      ],
+      "videos": []
+    }
+  ],
+  "gallery": [
+    {
+      "id": "gal-1790848878622",
+      "title": "Cherished Moment with Mum",
+      "date": "October 2026",
+      "caption": "Radiant smile on a peaceful afternoon",
+      "image": "/uploads/photo_1790848877786_92605bde.jpg",
+      "thumbnail": "/uploads/thumb_photo_1790848877786_92605bde.jpg",
+      "isNew": true,
+      "sortOrder": 5,
+      "deletedAt": null
+    },
+    {
+      "id": "gal-1",
+      "title": "Tending Her Garden of Roses",
+      "date": "Spring Morning",
+      "caption": "Mum arranging pastel blooms in the kitchen. Her patience with flowers mirrors the gentle care she has poured into each of us.",
+      "image": "assets/images/gallery-1.jpg",
+      "thumbnail": "assets/images/gallery-1.jpg",
+      "isNew": false,
+      "sortOrder": 1,
+      "deletedAt": null
+    },
+    {
+      "id": "gal-2",
+      "title": "Surrounded by Love & Laughter",
+      "date": "Family Celebration",
+      "caption": "All of us gathered around the table, celebrating Mum's infectious laughter and radiant joy under warm candlelight.",
+      "image": "assets/images/gallery-2.jpg",
+      "thumbnail": "assets/images/gallery-2.jpg",
+      "isNew": false,
+      "sortOrder": 2,
+      "deletedAt": null
+    },
+    {
+      "id": "gal-3",
+      "title": "Peaceful Coastal Walk",
+      "date": "Summer Holiday",
+      "caption": "Walking along the seaside with the ocean breeze in her hair and a serene smile on her face. Pure peace.",
+      "image": "assets/images/gallery-3.jpg",
+      "thumbnail": "assets/images/gallery-3.jpg",
+      "isNew": false,
+      "sortOrder": 3,
+      "deletedAt": null
+    },
+    {
+      "id": "gal-4",
+      "title": "Sweet Little Moments",
+      "date": "Grandmother's Warmth",
+      "caption": "The tenderest embrace—sharing generational love and endless giggles on a sunny Sunday afternoon.",
+      "image": "assets/images/gallery-4.jpg",
+      "thumbnail": "assets/images/gallery-4.jpg",
+      "isNew": false,
+      "sortOrder": 4,
+      "deletedAt": null
+    }
+  ],
+  "videos": [
+    {
+      "id": "vid-1",
+      "title": "A Message of Love from Your Children",
+      "date": "December 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "A special compilation video of fond memories, childhood photos, and heartfelt voice messages we put together for your birthday.",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790848708680",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790848946730",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790848964007",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790850393426",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790855227945",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790856422006",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790856584561",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790856876479",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790858527385",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790862227570",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790864092014",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video of appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790865026727",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video appreciation",
+      "deletedAt": null
+    },
+    {
+      "id": "vid-1790866078784",
+      "title": "Happy Birthday Mum - Family Greeting",
+      "date": "October 2026",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "description": "Loving video appreciation",
+      "deletedAt": null
+    }
+  ],
+  "wishes": [
+    {
+      "id": "wish-1790869127635",
+      "name": "Grace Adewale",
+      "phone": "+234 803 123 4567",
+      "message": "Happy Birthday to the most selfless and wonderful Mother on earth! We celebrate you today and forever.",
+      "time": "4:38 PM",
+      "year": "2026",
+      "date": "Oct 1, 2026 • 4:38 PM",
+      "avatar": "💖",
+      "createdAt": "2026-10-01T15:38:47.597Z",
+      "deletedAt": "2026-10-01T15:38:47.639Z"
+    },
+    {
+      "id": "wish-1790868691944",
+      "name": "Grace Adewale",
+      "phone": "+234 803 123 4567",
+      "message": "Happy Birthday to the most selfless and wonderful Mother on earth! We celebrate you today and forever.",
+      "time": "4:31 PM",
+      "year": "2026",
+      "date": "Oct 1, 2026 • 4:31 PM",
+      "avatar": "💖",
+      "createdAt": "2026-10-01T15:31:31.944Z",
+      "deletedAt": "2026-10-01T15:31:31.958Z"
+    },
+    {
+      "id": "wish-1790868393671",
+      "name": "Grace Adewale",
+      "phone": "+234 803 123 4567",
+      "message": "Happy Birthday to the most selfless and wonderful Mother on earth! We celebrate you today and forever.",
+      "time": "4:26 PM",
+      "year": "2026",
+      "date": "Oct 1, 2026 • 4:26 PM",
+      "avatar": "💖",
+      "createdAt": "2026-10-01T15:26:33.670Z",
+      "deletedAt": "2026-10-01T15:26:33.687Z"
+    },
+    {
+      "id": "wish-1790868306419",
+      "name": "Grace Adewale",
+      "phone": "+234 803 123 4567",
+      "message": "Happy Birthday to the most selfless and wonderful Mother on earth! We celebrate you today and forever.",
+      "time": "4:25 PM",
+      "year": "2026",
+      "date": "Oct 1, 2026 • 4:25 PM",
+      "avatar": "💖",
+      "createdAt": "2026-10-01T15:25:06.418Z",
+      "deletedAt": "2026-10-01T15:25:06.435Z"
+    },
+    {
+      "id": "wish-1790868271771",
+      "name": "Grace Adewale",
+      "phone": "+234 803 123 4567",
+      "message": "Happy Birthday to the most selfless and wonderful Mother on earth! We celebrate you today and forever.",
+      "time": "4:24 PM",
+      "year": "2026",
+      "date": "Oct 1, 2026 • 4:24 PM",
+      "avatar": "💖",
+      "createdAt": "2026-10-01T15:24:31.770Z",
+      "deletedAt": "2026-10-01T15:24:31.775Z"
+    },
+    {
+      "id": "wish-1790868222134",
+      "name": "Grace Adewale",
+      "phone": "+234 803 123 4567",
+      "message": "Happy Birthday to the most selfless and wonderful Mother on earth! We celebrate you today and forever.",
+      "time": "4:23 PM",
+      "year": "2026",
+      "date": "Oct 1, 2026 • 4:23 PM",
+      "avatar": "💖",
+      "createdAt": "2026-10-01T15:23:42.133Z",
+      "deletedAt": "2026-10-01T15:23:42.137Z"
+    },
+    {
+      "id": "wish-1790868178354",
+      "name": "Alexander K.",
+      "phone": "+1 (555) 987-6543",
+      "message": "Dearest Mum, you are the world to us! Wishing you the happiest birthday filled with peace and laughter! 💖",
+      "time": "4:22 PM",
+      "year": "2026",
+      "date": "Oct 1, 2026 • 4:22 PM",
+      "avatar": "🎂",
+      "createdAt": "2026-10-01T15:22:58.320Z",
+      "deletedAt": "2026-10-01T15:22:58.363Z"
+    }
+  ],
+  "textHistory": {}
+}
