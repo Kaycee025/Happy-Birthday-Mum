@@ -28,7 +28,7 @@ const { execFileSync } = require('child_process');
 // ==============================================================================
 // 1. CONFIGURATION & ENVIRONMENT VARIABLES
 // ==============================================================================
-const ROOT_DIR = __dirname;
+const ROOT_DIR = path.join(__dirname, '..');
 const IS_VERCEL = !!process.env.VERCEL;
 const DATA_DIR = IS_VERCEL ? path.join('/tmp', 'data') : path.join(ROOT_DIR, 'data');
 const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
