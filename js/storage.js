@@ -24,12 +24,12 @@ const DEFAULT_KEEPSAKE_DATA = {
   sections: [
     {
       id: "best-mum",
-      subtitle: "Unconditional Love",
-      title: "The Best Mum in the World",
-      narrative: "From our very first breath, you have enveloped us in a love that knows no bounds. You sacrificed your own comfort time and time again so that our dreams could take flight. In every quiet morning you spent preparing for us, and in every tender embrace when the world felt heavy, you taught us what genuine love feels like.",
-      quote: "“A mother’s love is the quiet harbor where our souls always find peace.”",
-      image: "assets/images/best-mum.jpg",
-      stamp: "Endless Love"
+      subtitle: "First Daughter",
+      title: "Lolo (Ada Ukwuaziza)",
+      narrative: "My big sister❤️\n\nHappy birthday Mummy. Everything in this world makes absolute sense with you in it. I pray that you get to live the kind of life you've longed for all these years. I pray you live long and healthy to reap the fruits of your labour and to get all those turkey gowns and holiday trips you claim that I owe you😂❤️\n\nI love you more than words can say, Mummy🫶🏻\n\nHappy birthday",
+      quote: "“I love you more than words can say, Mummy🫶🏻 Happy birthday”",
+      image: "assets/first-daughter/lolo-photo-01.jpg",
+      stamp: "Ada Ukwuaziza"
     },
     {
       id: "supportive-wife",
@@ -52,8 +52,8 @@ const DEFAULT_KEEPSAKE_DATA = {
       name: "Lolo (Ada Ukwuaziza)",
       role: "First Daughter",
       stamp: "Ada Ukwuaziza",
-      narrative: "Dearest Mum, words cannot begin to capture the depth of my gratitude and love for you. You have been our pillar of strength, our comfort, and our greatest inspiration. Everything I am and aspire to be is because of your unwavering love and sacrifices.",
-      quote: "“To the queen of our hearts, the woman whose grace guides us every day.”",
+      narrative: "My big sister❤️\n\nHappy birthday Mummy. Everything in this world makes absolute sense with you in it. I pray that you get to live the kind of life you've longed for all these years. I pray you live long and healthy to reap the fruits of your labour and to get all those turkey gowns and holiday trips you claim that I owe you😂❤️\n\nI love you more than words can say, Mummy🫶🏻\n\nHappy birthday",
+      quote: "“I love you more than words can say, Mummy🫶🏻 Happy birthday”",
       photos: [
         "assets/first-daughter/lolo-photo-01.jpg",
         "assets/first-daughter/lolo-photo-02.jpg",
@@ -196,19 +196,33 @@ class KeepsakeStorage {
 
   async fetchFromServerApi() {
     try {
-      const res = await fetch('/api/content');
-      if (res.ok) {
-        const serverData = await res.json();
-        if (serverData && typeof serverData === 'object') {
-          this.data = {
-            ...this.data,
-            ...serverData,
-            settings: { ...this.data.settings, ...(serverData.settings || {}) },
-            hero: { ...this.data.hero, ...(serverData.hero || {}) }
-          };
+      let serverData = null;
+      try {
+        const res = await fetch('/api/content');
+        if (res.ok) serverData = await res.json();
+      } catch (e) {}
+
+      // Fallback to static data/content.json if /api/content is unavailable (e.g. Netlify/static hosting)
+      if (!serverData) {
+        try {
+          const staticRes = await fetch('data/content.json');
+          if (staticRes.ok) serverData = await staticRes.json();
+        } catch (e) {}
+      }
+
+      if (serverData && typeof serverData === 'object') {
+        this.data = {
+          ...this.data,
+          ...serverData,
+          settings: { ...this.data.settings, ...(serverData.settings || {}) },
+          hero: { ...this.data.hero, ...(serverData.hero || {}) },
+          childrenTributes: (serverData.childrenTributes && serverData.childrenTributes.length > 0) ? serverData.childrenTributes : this.data.childrenTributes
+        };
+        try {
           localStorage.setItem(this.storageKey, JSON.stringify(this.data));
-          window.dispatchEvent(new CustomEvent('keepsake:data-updated'));
-        }
+          localStorage.setItem('keepsake_data_v2', JSON.stringify(this.data));
+        } catch (e) {}
+        window.dispatchEvent(new CustomEvent('keepsake:data-updated'));
       }
     } catch (e) {
       // Offline or direct file preview - gracefully uses localStorage/defaults
@@ -217,17 +231,54 @@ class KeepsakeStorage {
 
   loadData() {
     try {
-      const stored = localStorage.getItem(this.storageKey);
+      let stored = localStorage.getItem(this.storageKey);
+      // Fallback or sync with keepsake_data_v2 used by admin
+      if (!stored) {
+        stored = localStorage.getItem('keepsake_data_v2');
+      }
+
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Merge with defaults to ensure all keys exist
-        return {
+
+        // Auto-upgrade stale/placeholder First Daughter tribute if present in user's localStorage
+        const oldPhrases = ["Dearest Mum, words cannot begin", "From our very first breath"];
+        let needsSave = false;
+
+        if (parsed.childrenTributes && parsed.childrenTributes[0]) {
+          const c0 = parsed.childrenTributes[0];
+          if (!c0.narrative || oldPhrases.some(phrase => c0.narrative.includes(phrase))) {
+            c0.narrative = DEFAULT_KEEPSAKE_DATA.childrenTributes[0].narrative;
+            c0.quote = DEFAULT_KEEPSAKE_DATA.childrenTributes[0].quote;
+            needsSave = true;
+          }
+        }
+        if (parsed.sections && parsed.sections[0]) {
+          const s0 = parsed.sections[0];
+          if (!s0.narrative || oldPhrases.some(phrase => s0.narrative.includes(phrase))) {
+            s0.narrative = DEFAULT_KEEPSAKE_DATA.sections[0].narrative;
+            s0.quote = DEFAULT_KEEPSAKE_DATA.sections[0].quote;
+            s0.title = DEFAULT_KEEPSAKE_DATA.sections[0].title;
+            s0.subtitle = DEFAULT_KEEPSAKE_DATA.sections[0].subtitle;
+            needsSave = true;
+          }
+        }
+
+        const merged = {
           ...DEFAULT_KEEPSAKE_DATA,
           ...parsed,
           settings: { ...DEFAULT_KEEPSAKE_DATA.settings, ...(parsed.settings || {}) },
           hero: { ...DEFAULT_KEEPSAKE_DATA.hero, ...(parsed.hero || {}) },
           childrenTributes: (parsed.childrenTributes && parsed.childrenTributes.length > 0) ? parsed.childrenTributes : DEFAULT_KEEPSAKE_DATA.childrenTributes
         };
+
+        if (needsSave) {
+          try {
+            localStorage.setItem(this.storageKey, JSON.stringify(merged));
+            localStorage.setItem('keepsake_data_v2', JSON.stringify(merged));
+          } catch (e) {}
+        }
+
+        return merged;
       }
     } catch (e) {
       console.warn("Storage loading error:", e);
@@ -239,6 +290,7 @@ class KeepsakeStorage {
     this.data = newData;
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.data));
+      localStorage.setItem('keepsake_data_v2', JSON.stringify(this.data));
     } catch (e) {
       console.error("Local storage save error:", e);
     }

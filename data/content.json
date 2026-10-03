@@ -19,8 +19,8 @@
       "id": "best-mum",
       "subtitle": "First Daughter",
       "title": "Lolo (Ada Ukwuaziza)",
-      "narrative": "Dearest Mum, words cannot begin to capture the depth of my gratitude and love for you. You have been our pillar of strength, our comfort, and our greatest inspiration. Everything I am and aspire to be is because of your unwavering love and sacrifices.",
-      "quote": "“To the queen of our hearts, the woman whose grace guides us every day.”",
+      "narrative": "My big sister❤️\n\nHappy birthday Mummy. Everything in this world makes absolute sense with you in it. I pray that you get to live the kind of life you've longed for all these years. I pray you live long and healthy to reap the fruits of your labour and to get all those turkey gowns and holiday trips you claim that I owe you😂❤️\n\nI love you more than words can say, Mummy🫶🏻\n\nHappy birthday",
+      "quote": "“I love you more than words can say, Mummy🫶🏻 Happy birthday”",
       "image": "assets/first-daughter/lolo-photo-01.jpg",
       "stamp": "Ada Ukwuaziza",
       "photos": [
@@ -60,8 +60,8 @@
       "name": "Lolo (Ada Ukwuaziza)",
       "role": "First Daughter",
       "stamp": "Ada Ukwuaziza",
-      "narrative": "Dearest Mum, words cannot begin to capture the depth of my gratitude and love for you. You have been our pillar of strength, our comfort, and our greatest inspiration. Everything I am and aspire to be is because of your unwavering love and sacrifices.",
-      "quote": "“To the queen of our hearts, the woman whose grace guides us every day.”",
+      "narrative": "My big sister❤️\n\nHappy birthday Mummy. Everything in this world makes absolute sense with you in it. I pray that you get to live the kind of life you've longed for all these years. I pray you live long and healthy to reap the fruits of your labour and to get all those turkey gowns and holiday trips you claim that I owe you😂❤️\n\nI love you more than words can say, Mummy🫶🏻\n\nHappy birthday",
+      "quote": "“I love you more than words can say, Mummy🫶🏻 Happy birthday”",
       "photos": [
         "assets/first-daughter/lolo-photo-01.jpg",
         "assets/first-daughter/lolo-photo-02.jpg",
@@ -404,5 +404,10 @@
       "deletedAt": "2026-10-01T15:22:58.363Z"
     }
   ],
-  "textHistory": {}
+  "textHistory": {
+    "childrenTributes.0.narrative": {
+      "previousText": "My big sister❤️\n\nHappy birthday Mummy. Everything in this world makes absolute sense with you in it. I pray that you get to live the kind of life you've longed for all these years. I pray you live long and healthy to reap the fruits of your labour and to get all those turkey gowns and holiday trips you claim that I owe you😂❤️\n\nI love you more than words can say, Mummy🫶🏻\n\nHappy birthday",
+      "savedAt": "2026-10-03T02:20:04.554Z"
+    }
+  }
 }

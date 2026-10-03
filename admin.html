@@ -260,10 +260,10 @@
         </div>
 
         <div class="admin-form-group">
-          <span class="field-location-tag">Chapter 1 &rarr; Narrative Story</span>
+          <span class="field-location-tag">Chapter 1 &rarr; Narrative Story (First Daughter / Lolo Tribute)</span>
           <label class="admin-label">Narrative Story</label>
-          <textarea id="field-bm-narrative" class="admin-textarea" rows="4" maxlength="800"></textarea>
-          <div class="char-counter-wrap"><span class="char-counter" id="count-bm-narrative">0 / 800</span></div>
+          <textarea id="field-bm-narrative" class="admin-textarea" rows="5" maxlength="1200"></textarea>
+          <div class="char-counter-wrap"><span class="char-counter" id="count-bm-narrative">0 / 1200</span></div>
           <div class="live-preview-box">
             <div class="live-preview-title">Live Narrative Preview</div>
             <div class="live-preview-content" id="preview-bm-narrative"></div>
@@ -298,60 +298,198 @@
         </div>
       </div>
 
-      <!-- Children's Appreciation Photos Manager -->
+      <!-- Children's Appreciation Tributes & Photos Manager -->
       <div class="admin-card" style="margin-top: 30px;">
         <div class="admin-card-header">
-          <h2>Children's Appreciation Photos</h2>
-          <p>Add photos directly to each child's appreciation slideshow from your phone or PC.</p>
+          <h2>Children's Appreciation Tributes &amp; Photos</h2>
+          <p>Edit each child's heartfelt written tribute, special quote, and upload slideshow photos.</p>
         </div>
 
-        <div class="form-grid-2">
-          <!-- Child 1: Lolo -->
+        <!-- Child 1: Lolo (Ada Ukwuaziza) -->
+        <div class="child-admin-card" style="background: rgba(25, 11, 24, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 22px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span class="field-location-tag" style="margin-bottom: 4px;">Child 1 • First Daughter</span>
+              <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; color: #FFF7ED;">Lolo (Ada Ukwuaziza)</h3>
+            </div>
+            <span style="font-size: 0.85rem; color: #D4AF37; background: rgba(212, 175, 55, 0.12); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">Ada Ukwuaziza</span>
+          </div>
+
           <div class="admin-form-group">
-            <span class="field-location-tag">Child 1 &rarr; First Daughter</span>
-            <label class="admin-label">Lolo (Ada Ukwuaziza)</label>
+            <label class="admin-label">Written Tribute (Story)</label>
+            <textarea id="field-child-1-narrative" class="admin-textarea" rows="5" maxlength="1200"></textarea>
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-1-narrative">0 / 1200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.0.narrative', 'field-child-1-narrative')">Save Tribute</button>
+              <button type="button" class="btn-small-restore" onclick="restoreTextField('childrenTributes.0.narrative', 'field-child-1-narrative')">Restore</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Featured Quote</label>
+            <input type="text" id="field-child-1-quote" class="admin-input" maxlength="200">
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-1-quote">0 / 200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.0.quote', 'field-child-1-quote')">Save Quote</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Upload New Photo to Slideshow</label>
             <div class="upload-drop-zone" onclick="document.getElementById('child-1-upload-input').click()">
-              <div>Tap to upload photo for Lolo</div>
+              <div>Tap or click to upload photo for Lolo</div>
               <input type="file" id="child-1-upload-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleSectionPhotoUpload('child-1-lolo', this.files[0])">
             </div>
           </div>
+        </div>
 
-          <!-- Child 2: Kenechukwu -->
+        <!-- Child 2: Kenechukwu (Kenebom) -->
+        <div class="child-admin-card" style="background: rgba(25, 11, 24, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 22px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span class="field-location-tag" style="margin-bottom: 4px;">Child 2 • First Son</span>
+              <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; color: #FFF7ED;">Kenechukwu (Kenebom)</h3>
+            </div>
+            <span style="font-size: 0.85rem; color: #D4AF37; background: rgba(212, 175, 55, 0.12); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">Kenebom</span>
+          </div>
+
           <div class="admin-form-group">
-            <span class="field-location-tag">Child 2 &rarr; First Son</span>
-            <label class="admin-label">Kenechukwu (Kenebom)</label>
+            <label class="admin-label">Written Tribute (Story)</label>
+            <textarea id="field-child-2-narrative" class="admin-textarea" rows="4" maxlength="1200"></textarea>
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-2-narrative">0 / 1200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.1.narrative', 'field-child-2-narrative')">Save Tribute</button>
+              <button type="button" class="btn-small-restore" onclick="restoreTextField('childrenTributes.1.narrative', 'field-child-2-narrative')">Restore</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Featured Quote</label>
+            <input type="text" id="field-child-2-quote" class="admin-input" maxlength="200">
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-2-quote">0 / 200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.1.quote', 'field-child-2-quote')">Save Quote</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Upload New Photo to Slideshow</label>
             <div class="upload-drop-zone" onclick="document.getElementById('child-2-upload-input').click()">
-              <div>Tap to upload photo for Kenechukwu</div>
+              <div>Tap or click to upload photo for Kenechukwu</div>
               <input type="file" id="child-2-upload-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleSectionPhotoUpload('child-2-first-son', this.files[0])">
             </div>
           </div>
+        </div>
 
-          <!-- Child 3: Second Daughter -->
+        <!-- Child 3: Second Daughter -->
+        <div class="child-admin-card" style="background: rgba(25, 11, 24, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 22px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span class="field-location-tag" style="margin-bottom: 4px;">Child 3 • Second Daughter</span>
+              <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; color: #FFF7ED;">Second Daughter</h3>
+            </div>
+            <span style="font-size: 0.85rem; color: #D4AF37; background: rgba(212, 175, 55, 0.12); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">Second Daughter</span>
+          </div>
+
           <div class="admin-form-group">
-            <span class="field-location-tag">Child 3 &rarr; Second Daughter</span>
-            <label class="admin-label">Second Daughter</label>
+            <label class="admin-label">Written Tribute (Story)</label>
+            <textarea id="field-child-3-narrative" class="admin-textarea" rows="4" maxlength="1200"></textarea>
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-3-narrative">0 / 1200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.2.narrative', 'field-child-3-narrative')">Save Tribute</button>
+              <button type="button" class="btn-small-restore" onclick="restoreTextField('childrenTributes.2.narrative', 'field-child-3-narrative')">Restore</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Featured Quote</label>
+            <input type="text" id="field-child-3-quote" class="admin-input" maxlength="200">
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-3-quote">0 / 200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.2.quote', 'field-child-3-quote')">Save Quote</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Upload New Photo to Slideshow</label>
             <div class="upload-drop-zone" onclick="document.getElementById('child-3-upload-input').click()">
-              <div>Tap to upload photo for Second Daughter</div>
+              <div>Tap or click to upload photo for Second Daughter</div>
               <input type="file" id="child-3-upload-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleSectionPhotoUpload('child-3-second-daughter', this.files[0])">
             </div>
           </div>
+        </div>
 
-          <!-- Child 4: Second Son -->
+        <!-- Child 4: Second Son -->
+        <div class="child-admin-card" style="background: rgba(25, 11, 24, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 22px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span class="field-location-tag" style="margin-bottom: 4px;">Child 4 • Second Son</span>
+              <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; color: #FFF7ED;">Second Son</h3>
+            </div>
+            <span style="font-size: 0.85rem; color: #D4AF37; background: rgba(212, 175, 55, 0.12); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">Second Son</span>
+          </div>
+
           <div class="admin-form-group">
-            <span class="field-location-tag">Child 4 &rarr; Second Son</span>
-            <label class="admin-label">Second Son</label>
-            <div class="upload-drop-zone" onclick="document.getElementById('child-4-upload-input').click()">
-              <div>Tap to upload photo for Second Son</div>
-              <input type="file" id="child-4-upload-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleSectionPhotoUpload('child-4-second-son', this.files[0])">
+            <label class="admin-label">Written Tribute (Story)</label>
+            <textarea id="field-child-4-narrative" class="admin-textarea" rows="4" maxlength="1200"></textarea>
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-4-narrative">0 / 1200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.3.narrative', 'field-child-4-narrative')">Save Tribute</button>
+              <button type="button" class="btn-small-restore" onclick="restoreTextField('childrenTributes.3.narrative', 'field-child-4-narrative')">Restore</button>
             </div>
           </div>
 
-          <!-- Child 5: Third Son -->
           <div class="admin-form-group">
-            <span class="field-location-tag">Child 5 &rarr; Third Son</span>
-            <label class="admin-label">Third Son</label>
+            <label class="admin-label">Featured Quote</label>
+            <input type="text" id="field-child-4-quote" class="admin-input" maxlength="200">
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-4-quote">0 / 200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.3.quote', 'field-child-4-quote')">Save Quote</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Upload New Photo to Slideshow</label>
+            <div class="upload-drop-zone" onclick="document.getElementById('child-4-upload-input').click()">
+              <div>Tap or click to upload photo for Second Son</div>
+              <input type="file" id="child-4-upload-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleSectionPhotoUpload('child-4-second-son', this.files[0])">
+            </div>
+          </div>
+        </div>
+
+        <!-- Child 5: Third Son -->
+        <div class="child-admin-card" style="background: rgba(25, 11, 24, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 22px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span class="field-location-tag" style="margin-bottom: 4px;">Child 5 • Third Son</span>
+              <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; color: #FFF7ED;">Third Son</h3>
+            </div>
+            <span style="font-size: 0.85rem; color: #D4AF37; background: rgba(212, 175, 55, 0.12); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">Third Son</span>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Written Tribute (Story)</label>
+            <textarea id="field-child-5-narrative" class="admin-textarea" rows="4" maxlength="1200"></textarea>
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-5-narrative">0 / 1200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.4.narrative', 'field-child-5-narrative')">Save Tribute</button>
+              <button type="button" class="btn-small-restore" onclick="restoreTextField('childrenTributes.4.narrative', 'field-child-5-narrative')">Restore</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Featured Quote</label>
+            <input type="text" id="field-child-5-quote" class="admin-input" maxlength="200">
+            <div class="char-counter-wrap"><span class="char-counter" id="count-child-5-quote">0 / 200</span></div>
+            <div class="field-actions-row">
+              <button type="button" class="btn-small-save" onclick="saveTextField('childrenTributes.4.quote', 'field-child-5-quote')">Save Quote</button>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Upload New Photo to Slideshow</label>
             <div class="upload-drop-zone" onclick="document.getElementById('child-5-upload-input').click()">
-              <div>Tap to upload photo for Third Son</div>
+              <div>Tap or click to upload photo for Third Son</div>
               <input type="file" id="child-5-upload-input" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleSectionPhotoUpload('child-5-third-son', this.files[0])">
             </div>
           </div>

@@ -127,16 +127,29 @@ async function loadServerContent() {
     const res = await fetch('/api/content');
     if (res.ok) {
       appContent = await res.json();
+      localStorage.setItem('mum_keepsake_site_data', JSON.stringify(appContent));
       localStorage.setItem('keepsake_data_v2', JSON.stringify(appContent));
       loaded = true;
     }
   } catch (err) {
-    // Fallback to client storage
+    // Fallback to static or client storage
   }
 
   if (!loaded) {
     try {
-      const local = localStorage.getItem('keepsake_data_v2');
+      const staticRes = await fetch('data/content.json');
+      if (staticRes.ok) {
+        appContent = await staticRes.json();
+        localStorage.setItem('mum_keepsake_site_data', JSON.stringify(appContent));
+        localStorage.setItem('keepsake_data_v2', JSON.stringify(appContent));
+        loaded = true;
+      }
+    } catch (e) {}
+  }
+
+  if (!loaded) {
+    try {
+      const local = localStorage.getItem('mum_keepsake_site_data') || localStorage.getItem('keepsake_data_v2');
       if (local) {
         appContent = JSON.parse(local);
       } else if (typeof DEFAULT_KEEPSAKE_DATA !== 'undefined') {
@@ -145,7 +158,33 @@ async function loadServerContent() {
     } catch (e) {}
   }
 
+  // Auto-upgrade stale/placeholder First Daughter tribute if present in local state
   if (appContent) {
+    const oldPhrases = ["Dearest Mum, words cannot begin", "From our very first breath"];
+    let needsSync = false;
+    if (appContent.childrenTributes && appContent.childrenTributes[0]) {
+      const c0 = appContent.childrenTributes[0];
+      if (!c0.narrative || oldPhrases.some(p => c0.narrative.includes(p))) {
+        c0.narrative = "My big sister❤️\n\nHappy birthday Mummy. Everything in this world makes absolute sense with you in it. I pray that you get to live the kind of life you've longed for all these years. I pray you live long and healthy to reap the fruits of your labour and to get all those turkey gowns and holiday trips you claim that I owe you😂❤️\n\nI love you more than words can say, Mummy🫶🏻\n\nHappy birthday";
+        c0.quote = "“I love you more than words can say, Mummy🫶🏻 Happy birthday”";
+        needsSync = true;
+      }
+    }
+    if (appContent.sections && appContent.sections[0]) {
+      const s0 = appContent.sections[0];
+      if (!s0.narrative || oldPhrases.some(p => s0.narrative.includes(p))) {
+        s0.narrative = appContent.childrenTributes[0].narrative;
+        s0.quote = appContent.childrenTributes[0].quote;
+        needsSync = true;
+      }
+    }
+    if (needsSync) {
+      try {
+        localStorage.setItem('mum_keepsake_site_data', JSON.stringify(appContent));
+        localStorage.setItem('keepsake_data_v2', JSON.stringify(appContent));
+      } catch (e) {}
+    }
+
     populateAllFields();
   } else {
     showToast('Loaded local keepsake data.', '🌸');
@@ -168,14 +207,25 @@ function populateAllFields() {
   // 2. Chapters (Best Mum, Trained Us, Supportive Wife, Sister)
   const sections = appContent.sections || [];
   
-  // Section: Best Mum
+  // Section: Best Mum (Chapter 1)
   const secBm = sections.find(s => s.id === 'best-mum') || sections[0];
   if (secBm) {
+    const bmNarrative = (appContent.childrenTributes && appContent.childrenTributes[0]?.narrative) || secBm.narrative || '';
+    const bmQuote = (appContent.childrenTributes && appContent.childrenTributes[0]?.quote) || secBm.quote || '';
     setFieldVal('field-bm-subtitle', secBm.subtitle || '', 'count-bm-subtitle', 60);
     setFieldVal('field-bm-title', secBm.title || '', 'count-bm-title', 100);
-    setFieldVal('field-bm-narrative', secBm.narrative || '', 'count-bm-narrative', 800, 'preview-bm-narrative');
-    setFieldVal('field-bm-quote', secBm.quote || '', 'count-bm-quote', 200);
+    setFieldVal('field-bm-narrative', bmNarrative, 'count-bm-narrative', 1200, 'preview-bm-narrative');
+    setFieldVal('field-bm-quote', bmQuote, 'count-bm-quote', 200);
     if (secBm.image && document.getElementById('bm-img-preview')) document.getElementById('bm-img-preview').src = secBm.image;
+  }
+
+  // Children Tributes (1 to 5)
+  if (appContent.childrenTributes && appContent.childrenTributes.length > 0) {
+    appContent.childrenTributes.forEach((child, idx) => {
+      const num = idx + 1;
+      setFieldVal(`field-child-${num}-narrative`, child.narrative || '', `count-child-${num}-narrative`, 1200);
+      setFieldVal(`field-child-${num}-quote`, child.quote || '', `count-child-${num}-quote`, 200);
+    });
   }
 
   // Section: Supportive Wife
@@ -237,17 +287,41 @@ async function saveTextField(fieldPath, inputId) {
     });
   } catch (e) {}
 
-  // 2. Always update local storage so changes persist on Netlify / static hosts
+  // 2. Always update local storage so changes persist across all pages and refreshes
   try {
     if (!appContent) appContent = {};
     const parts = fieldPath.split('.');
     let curr = appContent;
     for (let i = 0; i < parts.length - 1; i++) {
-      if (!curr[parts[i]]) curr[parts[i]] = {};
+      if (!curr[parts[i]]) {
+        curr[parts[i]] = isNaN(Number(parts[i+1])) ? {} : [];
+      }
       curr = curr[parts[i]];
     }
     curr[parts[parts.length - 1]] = text;
+
+    // Keep sections[0] and childrenTributes[0] synchronized
+    if (fieldPath === 'sections.0.narrative' && appContent.childrenTributes && appContent.childrenTributes[0]) {
+      appContent.childrenTributes[0].narrative = text;
+      const c1El = document.getElementById('field-child-1-narrative');
+      if (c1El && c1El !== el) c1El.value = text;
+    } else if (fieldPath === 'childrenTributes.0.narrative' && appContent.sections && appContent.sections[0]) {
+      appContent.sections[0].narrative = text;
+      const bmEl = document.getElementById('field-bm-narrative');
+      if (bmEl && bmEl !== el) bmEl.value = text;
+    } else if (fieldPath === 'sections.0.quote' && appContent.childrenTributes && appContent.childrenTributes[0]) {
+      appContent.childrenTributes[0].quote = text;
+      const c1qEl = document.getElementById('field-child-1-quote');
+      if (c1qEl && c1qEl !== el) c1qEl.value = text;
+    } else if (fieldPath === 'childrenTributes.0.quote' && appContent.sections && appContent.sections[0]) {
+      appContent.sections[0].quote = text;
+      const bmqEl = document.getElementById('field-bm-quote');
+      if (bmqEl && bmqEl !== el) bmqEl.value = text;
+    }
+
+    localStorage.setItem('mum_keepsake_site_data', JSON.stringify(appContent));
     localStorage.setItem('keepsake_data_v2', JSON.stringify(appContent));
+    window.dispatchEvent(new CustomEvent('keepsake:data-updated'));
   } catch (e) {}
 
   showToast('Text saved.', '✅');

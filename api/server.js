@@ -753,7 +753,7 @@ async function handleRequest(req, res) {
       const sanitized = text.replace(/<[^>]*>?/gm, '').trim();
 
       // Enforce character limits based on field type
-      let maxLimit = 1000;
+      let maxLimit = 2500;
       if (fieldPath.includes('heading') || fieldPath.includes('title')) maxLimit = 150;
       if (fieldPath.includes('subtitle') || fieldPath.includes('stamp') || fieldPath.includes('badge')) maxLimit = 80;
 
@@ -780,6 +780,18 @@ async function handleRequest(req, res) {
 
       // Set new text
       target[lastKey] = sanitized;
+
+      // Keep sections[0] (Best Mum) and childrenTributes[0] (First Daughter / Lolo) synchronized
+      if (fieldPath === 'sections.0.narrative' && contentData.childrenTributes && contentData.childrenTributes[0]) {
+        contentData.childrenTributes[0].narrative = sanitized;
+      } else if (fieldPath === 'childrenTributes.0.narrative' && contentData.sections && contentData.sections[0]) {
+        contentData.sections[0].narrative = sanitized;
+      } else if (fieldPath === 'sections.0.quote' && contentData.childrenTributes && contentData.childrenTributes[0]) {
+        contentData.childrenTributes[0].quote = sanitized;
+      } else if (fieldPath === 'childrenTributes.0.quote' && contentData.sections && contentData.sections[0]) {
+        contentData.sections[0].quote = sanitized;
+      }
+
       saveContent();
 
       return sendJson(res, 200, {
@@ -1175,6 +1187,13 @@ async function handleRequest(req, res) {
   // PUBLIC API ENDPOINT (/api/content)
   // ----------------------------------------------------------------------------
   if (pathname === '/api/content' && method === 'GET') {
+    // Reload content file to guarantee latest changes on disk are served
+    if (fs.existsSync(CONTENT_FILE)) {
+      try {
+        contentData = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
+      } catch (e) {}
+    }
+
     // Filter out soft-deleted items for public visitors
     const publicGallery = (contentData.gallery || [])
       .filter(g => !g.deletedAt)
