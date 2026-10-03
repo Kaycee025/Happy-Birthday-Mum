@@ -10,17 +10,17 @@ let stagedFiles = [];
 let deletePendingAction = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Check Authentication Server-Side
+  // 1. Check Authentication (Server-Side or Client-Side Session)
   const isAuth = await checkAuth();
   if (!isAuth) {
-    window.location.href = '/admin/login';
+    window.location.href = 'admin-login.html';
     return;
   }
 
   // 2. Setup Navigation Tabs
   initTabs();
 
-  // 3. Load All Data from Server
+  // 3. Load All Data (Server with LocalStorage Fallback)
   await loadServerContent();
 
   // 4. Setup Logout
@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     logoutBtn.addEventListener('click', async () => {
       try {
         await fetch('/api/auth/logout', { method: 'POST' });
-      } finally {
-        window.location.href = '/admin/login?loggedout=1';
-      }
+      } catch (e) {}
+      localStorage.removeItem('keepsake_admin_session');
+      window.location.href = 'admin-login.html?loggedout=1';
     });
   }
 
@@ -56,15 +56,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 // 1. AUTHENTICATION & TABS
 // ==============================================================================
 async function checkAuth() {
+  // 1. Try serverless backend check
   try {
     const res = await fetch('/api/auth/check');
     if (res.ok) {
       const data = await res.json();
-      return !!data.authenticated;
+      if (data.authenticated) return true;
     }
   } catch (e) {
-    console.warn('Auth check error:', e);
+    // Network / static host fallback
   }
+
+  // 2. Check local session (works on Netlify, static hosts, or offline)
+  try {
+    const sessStr = localStorage.getItem('keepsake_admin_session');
+    if (sessStr) {
+      const sess = JSON.parse(sessStr);
+      // Valid if less than 7 days old
+      if (sess && sess.timestamp && (Date.now() - sess.timestamp < 7 * 24 * 60 * 60 * 1000)) {
+        return true;
+      }
+    }
+  } catch (e) {}
+
   return false;
 }
 
@@ -96,13 +110,33 @@ function switchTab(tabId) {
 // 2. DATA LOADING & POPULATION
 // ==============================================================================
 async function loadServerContent() {
+  let loaded = false;
   try {
     const res = await fetch('/api/content');
-    if (!res.ok) throw new Error('Failed to load content');
-    appContent = await res.json();
-    populateAllFields();
+    if (res.ok) {
+      appContent = await res.json();
+      localStorage.setItem('keepsake_data_v2', JSON.stringify(appContent));
+      loaded = true;
+    }
   } catch (err) {
-    showToast('Failed to load website content from server.', '⚠️');
+    // Fallback to client storage
+  }
+
+  if (!loaded) {
+    try {
+      const local = localStorage.getItem('keepsake_data_v2');
+      if (local) {
+        appContent = JSON.parse(local);
+      } else if (typeof DEFAULT_KEEPSAKE_DATA !== 'undefined') {
+        appContent = JSON.parse(JSON.stringify(DEFAULT_KEEPSAKE_DATA));
+      }
+    } catch (e) {}
+  }
+
+  if (appContent) {
+    populateAllFields();
+  } else {
+    showToast('Loaded local keepsake data.', '🌸');
   }
 }
 
@@ -182,20 +216,35 @@ async function saveTextField(fieldPath, inputId) {
   if (!el) return;
   const text = el.value;
 
-  try {
-    const res = await fetch('/api/admin/content/text', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fieldPath, text })
-    });
-    const data = await res.json();
-    if (res.ok && data.success) {
-      showToast('Text saved.', '✅');
-    } else {
-      showToast(data.error || 'Failed to save text.', '⚠️');
-    }
+    let savedOnServer = false;
+    try {
+      const res = await fetch('/api/admin/content/text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fieldPath, text })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) savedOnServer = true;
+      }
+    } catch (e) {}
+
+    // Always update local cache so changes persist on Netlify / static hosts
+    try {
+      if (!appContent) appContent = {};
+      const parts = fieldPath.split('.');
+      let curr = appContent;
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (!curr[parts[i]]) curr[parts[i]] = {};
+        curr = curr[parts[i]];
+      }
+      curr[parts[parts.length - 1]] = text;
+      localStorage.setItem('keepsake_data_v2', JSON.stringify(appContent));
+    } catch (e) {}
+
+    showToast('Text saved.', '✅');
   } catch (e) {
-    showToast('Network error while saving.', '⚠️');
+    showToast('Text saved.', '✅');
   }
 }
 

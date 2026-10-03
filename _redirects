@@ -1,0 +1,5 @@
+# Netlify Redirects for Mum's Keepsake Website
+/admin/login           /admin-login.html           200
+/admin/forgot-password /admin-forgot-password.html 200
+/admin/reset-password  /admin-reset-password.html  200
+/admin                 /admin.html                 200
