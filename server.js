@@ -29,10 +29,27 @@ const { execFileSync } = require('child_process');
 // 1. CONFIGURATION & ENVIRONMENT VARIABLES
 // ==============================================================================
 const ROOT_DIR = __dirname;
-const DATA_DIR = path.join(ROOT_DIR, 'data');
+const IS_VERCEL = !!process.env.VERCEL;
+const DATA_DIR = IS_VERCEL ? path.join('/tmp', 'data') : path.join(ROOT_DIR, 'data');
 const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
 const AUTH_FILE = path.join(DATA_DIR, 'auth.json');
 const CONTENT_FILE = path.join(DATA_DIR, 'content.json');
+
+// Ensure data directories exist
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+// Seed content file from repository on serverless cold starts
+if (IS_VERCEL) {
+  const repoContent = path.join(ROOT_DIR, 'data', 'content.json');
+  if (!fs.existsSync(CONTENT_FILE) && fs.existsSync(repoContent)) {
+    try {
+      fs.copyFileSync(repoContent, CONTENT_FILE);
+    } catch (e) {
+      console.warn('Could not copy seed content to /tmp:', e.message);
+    }
+  }
+}
 
 // Simple .env parser
 function loadEnv() {
@@ -81,26 +98,35 @@ function verifyPassword(password, salt, hash) {
   return bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB);
 }
 
-function signSession(sessionId) {
-  const hmac = crypto.createHmac('sha256', SESSION_SECRET);
-  hmac.update(sessionId);
-  return `${sessionId}.${hmac.digest('hex')}`;
+function createSessionToken(username, rememberMe) {
+  const maxAgeMs = rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+  const exp = Date.now() + maxAgeMs;
+  const payload = Buffer.from(JSON.stringify({ u: username, exp })).toString('base64url');
+  const sig = crypto.createHmac('sha256', SESSION_SECRET).update(payload).digest('base64url');
+  return `${payload}.${sig}`;
 }
 
-function verifySignedSession(signedVal) {
-  if (!signedVal || typeof signedVal !== 'string') return null;
-  const parts = signedVal.split('.');
-  if (parts.length !== 2) return null;
-  const [sessionId, signature] = parts;
-  const hmac = crypto.createHmac('sha256', SESSION_SECRET);
-  hmac.update(sessionId);
-  const expectedSig = hmac.digest('hex');
-  const bufA = Buffer.from(signature, 'hex');
-  const bufB = Buffer.from(expectedSig, 'hex');
-  if (bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB)) {
-    return sessionId;
+function verifySessionToken(token) {
+  if (!token || typeof token !== 'string') return null;
+  const dotIdx = token.indexOf('.');
+  if (dotIdx === -1) return null;
+  const payload = token.slice(0, dotIdx);
+  const sig = token.slice(dotIdx + 1);
+  const expectedSig = crypto.createHmac('sha256', SESSION_SECRET).update(payload).digest('base64url');
+  const bufA = Buffer.from(sig);
+  const bufB = Buffer.from(expectedSig);
+  if (bufA.length !== bufB.length || !crypto.timingSafeEqual(bufA, bufB)) {
+    return null;
   }
-  return null;
+  try {
+    const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    if (data.exp && data.exp < Date.now()) {
+      return null;
+    }
+    return data.u || 'admin';
+  } catch (e) {
+    return null;
+  }
 }
 
 // ==============================================================================
@@ -124,11 +150,11 @@ function initAuth() {
       console.error('Error reading auth file:', e);
     }
   } else {
-    const defaultPassword = process.env.ADMIN_PASSWORD || 'MumLove2026!';
+    const defaultPassword = process.env.ADMIN_PASSWORD || 'Olamide1234$';
     const salt = crypto.randomBytes(16).toString('hex');
     const hash = hashPassword(defaultPassword, salt);
     authData = {
-      username: process.env.ADMIN_USERNAME || 'admin',
+      username: process.env.ADMIN_USERNAME || 'Kcee492@gmail.com',
       salt,
       passwordHash: hash,
       failedAttempts: 0,
@@ -141,7 +167,11 @@ function initAuth() {
   }
 }
 function saveAuth() {
-  fs.writeFileSync(AUTH_FILE, JSON.stringify(authData, null, 2), 'utf8');
+  try {
+    fs.writeFileSync(AUTH_FILE, JSON.stringify(authData, null, 2), 'utf8');
+  } catch (e) {
+    console.warn('Could not write auth file (expected in some serverless modes):', e.message);
+  }
 }
 initAuth();
 
@@ -155,27 +185,26 @@ function loadContent() {
     }
   }
   if (!contentData) {
-    console.error('Fatal: content.json not found in data directory.');
-    process.exit(1);
+    const repoContent = path.join(ROOT_DIR, 'data', 'content.json');
+    if (fs.existsSync(repoContent)) {
+      try {
+        contentData = JSON.parse(fs.readFileSync(repoContent, 'utf8'));
+      } catch (e) {}
+    }
+  }
+  if (!contentData) {
+    console.warn('content.json not found, initializing empty fallback.');
+    contentData = {};
   }
 }
 function saveContent() {
-  fs.writeFileSync(CONTENT_FILE, JSON.stringify(contentData, null, 2), 'utf8');
+  try {
+    fs.writeFileSync(CONTENT_FILE, JSON.stringify(contentData, null, 2), 'utf8');
+  } catch (e) {
+    console.warn('Could not write content file (serverless read-only mode):', e.message);
+  }
 }
 loadContent();
-
-// In-Memory Sessions
-const activeSessions = new Map(); // sessionId -> { username, createdAt, expiresAt, rememberMe }
-
-// Clean up expired sessions periodically
-setInterval(() => {
-  const now = Date.now();
-  for (const [id, s] of activeSessions.entries()) {
-    if (s.expiresAt && s.expiresAt < now) {
-      activeSessions.delete(id);
-    }
-  }
-}, 60 * 1000);
 
 // ==============================================================================
 // 4. COOKIE & REQUEST HELPERS
@@ -192,14 +221,13 @@ function parseCookies(req) {
   return list;
 }
 
-function setSessionCookie(res, sessionId, rememberMe) {
-  const signed = signSession(sessionId);
-  let cookieHeader = `keepsake_admin_session=${signed}; Path=/; HttpOnly; SameSite=Lax`;
+function setSessionCookie(res, token, rememberMe) {
+  let cookieHeader = `keepsake_admin_session=${token}; Path=/; HttpOnly; SameSite=Lax`;
   if (rememberMe) {
     const maxAge = 7 * 24 * 60 * 60; // 7 days in seconds
     cookieHeader += `; Max-Age=${maxAge}`;
   }
-  if (IS_PROD) {
+  if (IS_PROD || IS_VERCEL) {
     cookieHeader += `; Secure`;
   }
   res.setHeader('Set-Cookie', cookieHeader);
@@ -207,22 +235,14 @@ function setSessionCookie(res, sessionId, rememberMe) {
 
 function clearSessionCookie(res) {
   let cookieHeader = `keepsake_admin_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`;
-  if (IS_PROD) cookieHeader += `; Secure`;
+  if (IS_PROD || IS_VERCEL) cookieHeader += `; Secure`;
   res.setHeader('Set-Cookie', cookieHeader);
 }
 
 function getAuthenticatedUser(req) {
   const cookies = parseCookies(req);
-  const signed = cookies['keepsake_admin_session'];
-  const sessionId = verifySignedSession(signed);
-  if (!sessionId) return null;
-  const session = activeSessions.get(sessionId);
-  if (!session) return null;
-  if (session.expiresAt && session.expiresAt < Date.now()) {
-    activeSessions.delete(sessionId);
-    return null;
-  }
-  return session.username;
+  const token = cookies['keepsake_admin_session'];
+  return verifySessionToken(token);
 }
 
 // Body parser helper for JSON
@@ -446,7 +466,7 @@ function optimizeImage(srcPath, destMainPath, destThumbPath) {
 // ==============================================================================
 // 7. ROUTE HANDLER
 // ==============================================================================
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res) {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
   const method = req.method;
@@ -522,17 +542,10 @@ const server = http.createServer(async (req, res) => {
       authData.lockoutUntil = null;
       saveAuth();
 
-      // Create session
-      const sessionId = crypto.randomBytes(32).toString('hex');
-      const maxAgeMs = rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
-      activeSessions.set(sessionId, {
-        username: authData.username || FIXED_ADMIN_EMAIL,
-        createdAt: now,
-        expiresAt: now + maxAgeMs,
-        rememberMe: !!rememberMe
-      });
+      // Create stateless signed session token
+      const token = createSessionToken(authData.username || FIXED_ADMIN_EMAIL, rememberMe);
+      setSessionCookie(res, token, rememberMe);
 
-      setSessionCookie(res, sessionId, rememberMe);
       return sendJson(res, 200, {
         success: true,
         redirect: '/admin'
@@ -544,9 +557,6 @@ const server = http.createServer(async (req, res) => {
 
   // POST /api/auth/logout
   if (pathname === '/api/auth/logout' && method === 'POST') {
-    const cookies = parseCookies(req);
-    const sessionId = verifySignedSession(cookies['keepsake_admin_session']);
-    if (sessionId) activeSessions.delete(sessionId);
     clearSessionCookie(res);
     return sendJson(res, 200, { success: true, redirect: '/admin/login?loggedout=1' });
   }
@@ -612,7 +622,7 @@ const server = http.createServer(async (req, res) => {
         try {
           const logEntry = `[${new Date().toISOString()}] Reset token generated for ${FIXED_ADMIN_EMAIL}: ${resetLink}\n`;
           fs.appendFileSync(path.join(DATA_DIR, 'password-resets.log'), logEntry, 'utf8');
-        } catch (e) {}
+        } catch (e) { }
       }
 
       return sendJson(res, 200, {
@@ -1227,16 +1237,24 @@ const server = http.createServer(async (req, res) => {
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
     sendFile(res, filePath, contentType);
   });
-});
+}
 
-server.listen(PORT, () => {
-  console.log(`================================================================`);
-  console.log(`🌸 MUM'S KEEPSAKE SECURE SERVER RUNNING LIVE`);
-  console.log(`----------------------------------------------------------------`);
-  console.log(`🌐 Public Website:       ${APP_URL}`);
-  console.log(`🔐 Admin Area:           ${APP_URL}/admin`);
-  console.log(`🔑 Admin Login:          ${APP_URL}/admin/login`);
-  console.log(`💌 Fixed Recovery Email: ${FIXED_ADMIN_EMAIL}`);
-  console.log(`⚙️  Environment:          ${IS_PROD ? 'Production' : 'Development'}`);
-  console.log(`================================================================`);
-});
+const server = http.createServer(handleRequest);
+
+// Export for serverless environments (Vercel)
+module.exports = handleRequest;
+
+// Only listen if executed directly as standalone process
+if (require.main === module && !process.env.VERCEL) {
+  server.listen(PORT, () => {
+    console.log(`================================================================`);
+    console.log(`🌸 MUM'S KEEPSAKE SECURE SERVER RUNNING LIVE`);
+    console.log(`----------------------------------------------------------------`);
+    console.log(`🌐 Public Website:       ${APP_URL}`);
+    console.log(`🔐 Admin Area:           ${APP_URL}/admin`);
+    console.log(`🔑 Admin Login:          ${APP_URL}/admin/login`);
+    console.log(`💌 Fixed Recovery Email: ${FIXED_ADMIN_EMAIL}`);
+    console.log(`⚙️  Environment:          ${IS_PROD ? 'Production' : 'Development'}`);
+    console.log(`================================================================`);
+  });
+}
