@@ -57,6 +57,10 @@ function request(pathName, method = 'GET', postData = null, cookie = null) {
 }
 
 async function run() {
+  const handleRequest = require('../api/server.js');
+  const server = http.createServer(handleRequest);
+  await new Promise(resolve => server.listen(8000, resolve));
+
   console.log('==================================================================');
   console.log('🛡️ VERIFYING ADMIN SYSTEM, AUTHENTICATION & RESPONSIVE SAFETY');
   console.log('==================================================================');
@@ -64,7 +68,7 @@ async function run() {
   // 1. Verify index.html Nav Bar has Admin link
   console.log('\n[1] Checking public navbar navigation...');
   const indexHtml = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf-8');
-  assert(indexHtml.includes('href="/admin/login"'), 'index.html contains href="/admin/login"');
+  assert(indexHtml.includes('admin-login.html'), 'index.html contains link to admin-login.html');
   assert(indexHtml.includes('nav-link-admin'), 'index.html contains nav-link-admin class');
   assert(indexHtml.includes('>Admin</a>'), 'index.html contains Admin link text');
 
@@ -72,7 +76,7 @@ async function run() {
   console.log('\n[2] Checking admin-login.html elements...');
   const loginHtml = fs.readFileSync(path.resolve(__dirname, '../admin-login.html'), 'utf-8');
   assert(loginHtml.includes('Email Address'), 'admin-login.html labels field as Email Address');
-  assert(loginHtml.includes('placeholder="Kcee492@gmail.com"'), 'admin-login.html has Kcee492@gmail.com placeholder');
+  assert(loginHtml.includes('placeholder="name@example.com"'), 'admin-login.html has generic name@example.com placeholder');
   assert(loginHtml.includes('forgot-password-safety-wrap'), 'admin-login.html has separated forgot password safety wrap');
   assert(loginHtml.includes('id="login-btn"'), 'admin-login.html has login-btn');
   // Confirm forgot link is placed after login-btn in HTML body
@@ -254,6 +258,7 @@ async function run() {
   console.log('\n==================================================================');
   console.log('🎉 ALL ADMIN, AUTH, FORGOT-PASSWORD & RESPONSIVE TESTS PASSED 100%!');
   console.log('==================================================================');
+  server.close();
 }
 
 run().catch(err => {
