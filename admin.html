@@ -39,6 +39,20 @@
       </div>
     </header>
 
+    <!-- Mobile Quick Section Switcher (< 768px) -->
+    <div class="mobile-nav-select-wrap">
+      <label for="mobile-section-select" class="mobile-select-label">Jump Directly to Section:</label>
+      <select class="mobile-section-select" id="mobile-section-select" onchange="switchTab(this.value)">
+        <option value="overview">📋 Sections Overview</option>
+        <option value="hero">🌸 Hero & Mum's Info</option>
+        <option value="best-mum">❤️ Chapter 1: The Best Mum</option>
+        <option value="supportive-wife">💍 Chapter 2: A Supportive Wife</option>
+        <option value="wishes">💌 Birthday Wishes</option>
+        <option value="deleted">🗑️ Recently Deleted</option>
+        <option value="security">🔐 Security & Password</option>
+      </select>
+    </div>
+
     <!-- Navigation Tabs (Mobile-Friendly Horizontal Scroll) -->
     <div class="admin-tabs">
       <button type="button" class="tab-btn active" data-tab="overview">Sections Overview</button>
@@ -116,6 +130,7 @@
          TAB 1: HERO & MUM'S DETAILS
          ===================================================================== -->
     <div class="tab-panel" id="tab-hero">
+      <button type="button" class="btn-back-overview" onclick="switchTab('overview')">&larr; Back to Sections Overview</button>
       <div class="admin-card">
         <div class="admin-card-header">
           <h2>Hero & Opening Greeting</h2>
@@ -213,6 +228,7 @@
          TAB 2: SECTION 1: THE BEST MUM
          ===================================================================== -->
     <div class="tab-panel" id="tab-best-mum">
+      <button type="button" class="btn-back-overview" onclick="switchTab('overview')">&larr; Back to Sections Overview</button>
       <div class="admin-card">
         <div class="admin-card-header">
           <h2>Chapter 1: The Best Mum</h2>
@@ -347,6 +363,7 @@
          TAB 3: SECTION 2: A SUPPORTIVE WIFE
          ===================================================================== -->
     <div class="tab-panel" id="tab-supportive-wife">
+      <button type="button" class="btn-back-overview" onclick="switchTab('overview')">&larr; Back to Sections Overview</button>
       <div class="admin-card">
         <div class="admin-card-header">
           <h2>Chapter 2: A Supportive Wife</h2>
@@ -421,6 +438,7 @@
          TAB 4: BIRTHDAY WISHES
          ===================================================================== -->
     <div class="tab-panel" id="tab-wishes">
+      <button type="button" class="btn-back-overview" onclick="switchTab('overview')">&larr; Back to Sections Overview</button>
       <div class="admin-card">
         <div class="admin-card-header">
           <h2>Family Birthday Wishes &amp; Guestbook Mode</h2>
@@ -463,6 +481,7 @@
          TAB 9: RECENTLY DELETED (30-Day Recovery)
          ===================================================================== -->
     <div class="tab-panel" id="tab-deleted">
+      <button type="button" class="btn-back-overview" onclick="switchTab('overview')">&larr; Back to Sections Overview</button>
       <div class="admin-card">
         <div class="admin-card-header">
           <h2>Recently Deleted Items (30-Day Recovery)</h2>
@@ -478,6 +497,7 @@
          TAB 10: SECURITY & CHANGE PASSWORD
          ===================================================================== -->
     <div class="tab-panel" id="tab-security">
+      <button type="button" class="btn-back-overview" onclick="switchTab('overview')">&larr; Back to Sections Overview</button>
       <div class="admin-card">
         <div class="admin-card-header">
           <h2>Administrator Security & Credentials</h2>
@@ -544,6 +564,21 @@
     <span id="toast-message">Success</span>
   </div>
 
+  <script src="/js/storage.js"></script>
+  <script>
+    if (typeof window.DEFAULT_KEEPSAKE_DATA === 'undefined') {
+      var s = document.createElement('script');
+      s.src = 'js/storage.js';
+      document.head.appendChild(s);
+    }
+  </script>
   <script src="/js/admin.js"></script>
+  <script>
+    if (typeof window.switchTab === 'undefined') {
+      var s = document.createElement('script');
+      s.src = 'js/admin.js';
+      document.head.appendChild(s);
+    }
+  </script>
 </body>
 </html>
